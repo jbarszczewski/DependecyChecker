@@ -11,6 +11,6 @@ steps:
 - script: |
     dotnet build -c $(buildConfiguration)
     dotnet test tests/DependencyChecker.Tests -c $(buildConfiguration)
-    dotnet pack src/DependencyChecker/DependecyChecker.csproj -c $(buildConfiguration) /p:PackageVersion=$(major).$(minor).$(patch) --output $(Build.ArtifactStagingDirectory) --no-build --no-restore
+    dotnet pack src/DependencyChecker/DependencyChecker.csproj -c $(buildConfiguration) /p:PackageVersion=$(major).$(minor).$(patch) --output $(Build.ArtifactStagingDirectory) --no-build --no-restore
  
 - task: PublishBuildArtifacts@1
