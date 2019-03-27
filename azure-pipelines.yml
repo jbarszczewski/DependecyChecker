@@ -10,7 +10,12 @@ variables:
 steps:
 - script: |
     dotnet build -c $(buildConfiguration)
-    dotnet test tests/DependecyChecker.Tests -c $(buildConfiguration)
-    dotnet pack src/DependecyChecker/DependecyChecker.csproj -c $(buildConfiguration) /p:PackageVersion=$(major).$(minor).$(patch) --output $(Build.ArtifactStagingDirectory) --no-build --no-restore
+    dotnet test tests/DependencyChecker.Tests -c $(buildConfiguration)
+    dotnet pack src/DependencyChecker/DependecyChecker.csproj -c $(buildConfiguration) /p:PackageVersion=$(major).$(minor).$(patch) --output $(Build.ArtifactStagingDirectory) --no-build --no-restore
  
 - task: PublishBuildArtifacts@1
+
+- task: PublishTestResults@2
+  inputs:
+    #testResultsFormat: 'xUnit'
+    #testResultsFiles: '**/TEST-*.xml' 
