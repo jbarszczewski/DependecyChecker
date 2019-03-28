@@ -1,0 +1,29 @@
+pool:
+  vmImage: 'ubuntu-16.04'
+ 
+variables:
+  buildConfiguration: 'release'
+  major: 1
+  minor: 0
+  patch: $[counter('myversioncounter', 0)]
+ 
+steps:
+- script: |
+    dotnet build -c $(buildConfiguration)
+    dotnet test tests/DependencyChecker.Tests -c $(buildConfiguration)
+    dotnet pack src/DependencyChecker/DependencyChecker.csproj -c $(buildConfiguration) /p:PackageVersion=$(major).$(minor).$(patch) --output $(Build.ArtifactStagingDirectory) --no-build --no-restore
+ 
+- task: PublishBuildArtifacts@1
+
+# Publish Test Results to Azure Pipelines/TFS
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'xUnit'
+    testResultsFiles: '**/TEST-*.xml' 
+    #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
+    #mergeTestResults: false # Optional
+    #failTaskOnFailedTests: false # Optional
+    #testRunTitle: # Optional
+    #buildPlatform: # Optional
+    #buildConfiguration: # Optional
+    #publishRunAttachments: true # Optional
